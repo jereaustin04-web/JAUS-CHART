@@ -1,83 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Music Player</title>
+<title>Music Player</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
-
-<h1>🎵 My Music</h1>
-
 <div class="player">
 
-<img id="cover" src="https://via.placeholder.com/300" alt="cover">
+<h1>🎵 My Music Player</h1>
+
+<input type="file" id="fileInput" accept="audio/*" multiple>
 
 <h2 id="songTitle">No Song Selected</h2>
 
 <audio id="audio"></audio>
 
-<div class="progress-area">
-<input type="range" id="progress" value="0">
-</div>
-
-<div class="time">
-<span id="current">0:00</span>
-<span id="duration">0:00</span>
-</div>
-
 <div class="buttons">
 <button onclick="previousSong()">⏮</button>
-<button onclick="playPause()" id="playBtn">▶️</button>
+<button id="playBtn" onclick="playPause()">▶️</button>
 <button onclick="nextSong()">⏭</button>
 </div>
 
-<div class="extra">
-<button onclick="downloadSong()">📥 Download</button>
-<button onclick="shuffle()">🔀 Shuffle</button>
-<button onclick="repeatSong()">🔁 Repeat</button>
+<div class="buttons">
+<button onclick="repeatSong()">🔁</button>
+<button onclick="shuffle()">🔀</button>
+<button onclick="downloadSong()">⬇️</button>
 </div>
 
+<input type="range" id="progress" value="0">
+
+<p>
+<span id="current">0:00</span> /
+<span id="duration">0:00</span>
+</p>
+
+<label>🔊 Volume</label>
 <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
 
-</div>
-
-
-<div class="upload">
-
-<h2>📤 Upload Music</h2>
-
-<input type="file" id="fileInput" accept="audio/*" multiple>
-
-</div>
-
-
-<div class="playlist">
-
-<h2>📃 Playlist</h2>
+<h3>Playlist</h3>
 
 <ul id="playlist"></ul>
 
 </div>
 
-
-</div>
-
-
 <script src="script.js"></script>
 
 </body>
-</html>
-
-  function playSong(){
-    audio.load();
-    audio.play().then(()=>{
-        console.log("Playing");
-    }).catch(error=>{
-        alert("Nyimbo yalephera kuyamba: " + error);
-    });
-}
+  </html>
