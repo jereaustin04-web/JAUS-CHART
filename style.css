@@ -1,113 +1,41 @@
- *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
 body{
-    min-height:100vh;
-    background:linear-gradient(135deg,#141e30,#243b55);
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.app{
-    width:95%;
-    max-width:420px;
-    background:#111;
-    padding:25px;
-    border-radius:25px;
-    box-shadow:0 0 25px rgba(0,0,0,0.5);
-}
-
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    color:#00ff99;
+background:#111;
+color:white;
+font-family:Arial;
+text-align:center;
 }
 
 .player{
-    text-align:center;
+width:90%;
+max-width:400px;
+margin:40px auto;
+background:#222;
+padding:20px;
+border-radius:20px;
 }
 
-#cover{
-    width:220px;
-    height:220px;
-    border-radius:50%;
-    object-fit:cover;
-    border:5px solid #00ff99;
-    margin-bottom:15px;
+button{
+font-size:25px;
+margin:5px;
+padding:10px;
+border-radius:50%;
+border:none;
 }
 
-#songTitle{
-    margin-bottom:15px;
+input{
+width:90%;
+margin:10px;
 }
 
-.progress-area input,
-#volume{
-    width:100%;
-    margin:10px 0;
+ul{
+list-style:none;
+padding:0;
 }
 
-.time{
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-}
-
-.buttons button,
-.extra button{
-    border:none;
-    padding:12px;
-    margin:5px;
-    border-radius:50px;
-    cursor:pointer;
-    background:#00ff99;
-    color:#000;
-    font-size:18px;
-}
-
-.extra button{
-    font-size:14px;
-}
-
-button:hover{
-    transform:scale(1.05);
-}
-
-.upload{
-    margin-top:25px;
-    text-align:center;
-    padding:15px;
-    background:#222;
-    border-radius:15px;
-}
-
-.upload input{
-    margin-top:10px;
-    color:white;
-}
-
-.playlist{
-    margin-top:20px;
-}
-
-.playlist ul{
-    list-style:none;
-}
-
-.playlist li{
-    background:#222;
-    margin:8px 0;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.playlist li:hover{
-    background:#00ff99;
-    color:black;
+li{
+background:#333;
+margin:5px;
+padding:10px;
+border-radius:10px;
+cursor:pointer;
 }
