@@ -1,50 +1,75 @@
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Music Player</title>
-
+<title>Music Player Pro</title>
 <style>
+ body{ font-family: Arial; text-align:center; background:#111; color:white; padding:20px; }
+ input, button{ margin:5px; padding:10px 15px; font-size:15px; border-radius:8px; border:none; }
+ button{ background:#00c853; color:white; }
+.song{ padding:8px; background:#222; margin:4px auto; border-radius:5px; width:90%; cursor:pointer; }
+.active{ background:#00c853; }
+</style>
+</head>
+<body>
+<h1>🎵 Music Player</h1>
 
-body{
-    background:#111;
-    color:white;
-    font-family:Arial;
-    text-align:center;
-    padding:20px;
+<input type="file" id="file" accept="audio/*" multiple><br>
+
+<button onclick="prev()">⏮ Prev</button>
+<button onclick="play()">▶ Play</button>
+<button onclick="pause()">⏸ Pause</button>
+<button onclick="next()">⏭ Next</button>
+<button onclick="download()">⬇ Download</button>
+
+<h3 id="name">Palibe nyimbo</h3>
+<p id="info" style="color:#aaa; font-size:13px;"></p>
+<audio id="audio" controls onended="next()"></audio>
+
+<div id="list"></div>
+
+<script>
+let audio=document.getElementById("audio");
+let file=document.getElementById("file");
+let list=document.getElementById("list");
+let songs=[], index=0;
+
+file.onchange=()=>{
+ songs=[...file.files];
+ list.innerHTML="";
+ songs.forEach((s,i)=>{
+   let d=document.createElement("div");
+   d.className="song";
+   d.innerText=s.name;
+   d.onclick=()=>playSong(i);
+   list.appendChild(d);
+ });
+ if(songs.length>0) playSong(0);
 }
 
-.player{
-    max-width:400px;
-    margin:auto;
-    background:#222;
-    padding:20px;
-    border-radius:20px;
+function playSong(i){
+ index=i;
+ let s=songs[i];
+ audio.src=URL.createObjectURL(s);
+ document.getElementById("name").innerText=s.name;
+ let date=new Date(s.lastModified).toLocaleDateString();
+ let suffix=s.name.split('.').pop();
+ document.getElementById("info").innerText=`Date: ${date} |.${suffix} | ${(s.size/1024/1024).toFixed(2)}MB`;
+ document.querySelectorAll(".song").forEach((el,j)=>el.classList.toggle("active",j==i));
+ audio.play();
 }
-
-h1{
-    color:#00e676;
+function play(){audio.play();}
+function pause(){audio.pause();}
+function next(){if(index<songs.length-1) playSong(index+1);}
+function prev(){if(index>0) playSong(index-1);}
+function download(){
+ let a=document.createElement("a");
+ a.href=audio.src;
+ a.download=songs[index].name;
+ a.click();
 }
-
-button{
-    background:#00c853;
-    color:white;
-    border:none;
-    padding:12px;
-    margin:5px;
-    border-radius:10px;
-    font-size:16px;
-}
-
-button:hover{
-    background:#009624;
-}
-
-input{
-    margin:10px;
-}
-
-audio{
+</script>
+</body>
+</html>
+```
