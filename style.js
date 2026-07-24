@@ -189,6 +189,30 @@ function downloadSong(){
 
     if(!audio.src)return;
 
-    let a=document.createElement("a");
+    let a=document.createElement("a")
+        a.href = audio.src;
+    a.download = songs[currentSong].name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
+// Song ikatha
+audio.addEventListener("ended", () => {
+    if (!isRepeat) {
+        nextSong();
+    }
+});
+
+// Format time
+function formatTime(time) {
+    if (isNaN(time)) return "0:00";
+
+    let minutes = Math.floor(time / 60);
+    let seconds = Math.floor(time % 60);
+
+    if (seconds < 10) seconds = "0" + seconds;
+
+    return minutes + ":" + seconds;
+}
    
