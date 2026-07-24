@@ -1,58 +1,60 @@
-const audio = document.getElementById("audio");
-const playBtn = document.getElementById("playBtn");
-const fileInput = document.getElementById("fileInput");
-const playlist = document.getElementById("playlist");
-const songTitle = document.getElementById("songTitle");
-const progress = document.getElementById("progress");
-const current = document.getElementById("current");
-const duration = document.getElementById("duration");
-const volume = document.getElementById("volume");
+const audio=document.getElementById("audio");
+const playBtn=document.getElementById("playBtn");
+const fileInput=document.getElementById("fileInput");
+const playlist=document.getElementById("playlist");
+const songTitle=document.getElementById("songTitle");
+const progress=document.getElementById("progress");
+const current=document.getElementById("current");
+const duration=document.getElementById("duration");
+const volume=document.getElementById("volume");
 
-let songs = [];
-let currentSong = 0;
-let isRepeat = false;
+let songs=[];
+let currentSong=0;
+let repeat=false;
 
 
-// Upload music
-fileInput.addEventListener("change", function(){
+// Upload songs
+fileInput.onchange=function(){
 
-    songs = [];
+songs=[];
 
-    for(let file of this.files){
+for(let file of this.files){
 
-        songs.push({
-            name:file.name,
-            url:URL.createObjectURL(file)
-        });
-
-    }
-
-    showPlaylist();
-
-    loadSong(0);
-
+songs.push({
+name:file.name,
+url:URL.createObjectURL(file)
 });
+
+}
+
+showPlaylist();
+
+loadSong(0);
+
+};
 
 
 // Show playlist
 function showPlaylist(){
 
-    playlist.innerHTML="";
+playlist.innerHTML="";
 
-    songs.forEach((song,index)=>{
+songs.forEach((song,index)=>{
 
-        let li=document.createElement("li");
+let li=document.createElement("li");
 
-        li.innerHTML="🎵 "+song.name;
+li.textContent="🎵 "+song.name;
 
-        li.onclick=function(){
-            loadSong(index);
-            playSong();
-        };
+li.onclick=function(){
 
-        playlist.appendChild(li);
+loadSong(index);
+playSong();
 
-    });
+};
+
+playlist.appendChild(li);
+
+});
 
 }
 
@@ -60,110 +62,124 @@ function showPlaylist(){
 // Load song
 function loadSong(index){
 
-    currentSong=index;
+if(songs.length==0)return;
 
-    audio.src=songs[index].url;
+currentSong=index;
 
-    songTitle.innerHTML=songs[index].name;
+audio.src=songs[index].url;
+
+songTitle.textContent=songs[index].name;
 
 }
 
 
-// Play song
+// Play
 function playSong(){
 
-    audio.play();
+audio.play()
+.then(()=>{
 
-    playBtn.innerHTML="⏸";
+playBtn.textContent="⏸";
+
+})
+.catch(error=>{
+
+alert("Sankhani nyimbo kaye");
+
+});
 
 }
 
 
-// Pause / Play button
+// Play/Pause
 function playPause(){
 
-    if(audio.paused){
+if(audio.paused){
 
-        playSong();
+playSong();
 
-    }else{
+}else{
 
-        audio.pause();
+audio.pause();
 
-        playBtn.innerHTML="▶️";
+playBtn.textContent="▶️";
 
-    }
+}
 
 }
 
 
-// Next song
+// Next
 function nextSong(){
 
-    if(songs.length===0)return;
+if(songs.length==0)return;
 
-    currentSong++;
+currentSong++;
 
-    if(currentSong>=songs.length){
-        currentSong=0;
-    }
+if(currentSong>=songs.length)
+currentSong=0;
 
-    loadSong(currentSong);
-    playSong();
+loadSong(currentSong);
+
+playSong();
 
 }
 
 
-// Previous song
+// Previous
 function previousSong(){
 
-    if(songs.length===0)return;
+if(songs.length==0)return;
 
-    currentSong--;
+currentSong--;
 
-    if(currentSong<0){
-        currentSong=songs.length-1;
-    }
+if(currentSong<0)
+currentSong=songs.length-1;
 
-    loadSong(currentSong);
-    playSong();
+loadSong(currentSong);
+
+playSong();
 
 }
 
 
-// Progress bar
-audio.addEventListener("timeupdate",()=>{
+// Progress
+audio.ontimeupdate=function(){
 
-    progress.value=(audio.currentTime/audio.duration)*100 || 0;
+if(audio.duration){
 
-    current.innerHTML=formatTime(audio.currentTime);
+progress.value=(audio.currentTime/audio.duration)*100;
 
-    duration.innerHTML=formatTime(audio.duration);
+}
 
-});
+current.textContent=time(audio.currentTime);
+
+duration.textContent=time(audio.duration);
+
+}
 
 
-progress.addEventListener("input",()=>{
+progress.oninput=function(){
 
-    audio.currentTime=(progress.value/100)*audio.duration;
+audio.currentTime=(progress.value/100)*audio.duration;
 
-});
+}
 
 
 // Volume
-volume.addEventListener("input",()=>{
+volume.oninput=function(){
 
-    audio.volume=volume.value;
+audio.volume=volume.value;
 
-});
+}
 
 
 // Repeat
 function repeatSong(){
 
-    isRepeat=!isRepeat;
+repeat=!repeat;
 
-    audio.loop=isRepeat;
+audio.loop=repeat;
 
 }
 
@@ -171,15 +187,15 @@ function repeatSong(){
 // Shuffle
 function shuffle(){
 
-    if(songs.length>0){
+if(songs.length){
 
-        let random=Math.floor(Math.random()*songs.length);
+let r=Math.floor(Math.random()*songs.length);
 
-        loadSong(random);
+loadSong(r);
 
-        playSong();
+playSong();
 
-    }
+}
 
 }
 
@@ -187,32 +203,39 @@ function shuffle(){
 // Download
 function downloadSong(){
 
-    if(!audio.src)return;
+if(!audio.src)return;
 
-    let a=document.createElement("a")
-        a.href = audio.src;
-    a.download = songs[currentSong].name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+let a=document.createElement("a");
+
+a.href=audio.src;
+
+a.download=songs[currentSong].name;
+
+a.click();
+
 }
 
-// Song ikatha
-audio.addEventListener("ended", () => {
-    if (!isRepeat) {
-        nextSong();
-    }
-});
 
-// Format time
-function formatTime(time) {
-    if (isNaN(time)) return "0:00";
+// End
+audio.onended=function(){
 
-    let minutes = Math.floor(time / 60);
-    let seconds = Math.floor(time % 60);
+if(!repeat)
+nextSong();
 
-    if (seconds < 10) seconds = "0" + seconds;
+};
 
-    return minutes + ":" + seconds;
+
+// Time
+function time(t){
+
+if(isNaN(t)) return "0:00";
+
+let m=Math.floor(t/60);
+
+let s=Math.floor(t%60);
+
+if(s<10)s="0"+s;
+
+return m+":"+s;
+
 }
-   
