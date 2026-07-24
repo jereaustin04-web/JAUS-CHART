@@ -100,3 +100,167 @@ li{
 
 
 <ul id="playlist"></ul>
+<script>
+
+let audio = document.getElementById("audio");
+let fileInput = document.getElementById("fileInput");
+let playlist = document.getElementById("playlist");
+let songName = document.getElementById("songName");
+
+let songs = [];
+let currentSong = 0;
+
+
+// Date
+let today = new Date();
+document.getElementById("date").innerHTML =
+"📅 " + today.toDateString();
+
+
+// Upload songs
+fileInput.onchange = function(){
+
+    songs = [];
+
+    playlist.innerHTML = "";
+
+    for(let i = 0; i < fileInput.files.length; i++){
+
+        songs.push(fileInput.files[i]);
+
+        let li = document.createElement("li");
+
+        li.innerHTML = fileInput.files[i].name;
+
+        li.onclick = function(){
+
+            currentSong = i;
+            loadSong();
+
+            playSong();
+
+        };
+
+        playlist.appendChild(li);
+
+    }
+
+};
+
+
+// Load song
+function loadSong(){
+
+    let song = songs[currentSong];
+
+    if(song){
+
+        audio.src = URL.createObjectURL(song);
+
+        songName.innerHTML = song.name;
+
+        highlight();
+
+    }
+
+}
+
+
+// Play
+function playSong(){
+
+    if(songs.length > 0){
+
+        if(!audio.src){
+
+            loadSong();
+
+        }
+
+        audio.play();
+
+    }
+
+}
+
+
+// Pause
+function pauseSong(){
+
+    audio.pause();
+
+}
+
+
+// Next
+function nextSong(){
+
+    if(songs.length > 0){
+
+        currentSong++;
+
+        if(currentSong >= songs.length){
+
+            currentSong = 0;
+
+        }
+
+        loadSong();
+
+        playSong();
+
+    }
+
+}
+
+
+// Previous
+function prevSong(){
+
+    if(songs.length > 0){
+
+        currentSong--;
+
+        if(currentSong < 0){
+
+            currentSong = songs.length - 1;
+
+        }
+
+        loadSong();
+
+        playSong();
+
+    }
+
+}
+
+
+// Highlight playlist
+function highlight(){
+
+    let items = document.querySelectorAll("#playlist li");
+
+    items.forEach(function(item,index){
+
+        if(index === currentSong){
+
+            item.classList.add("active");
+
+        }else{
+
+            item.classList.remove("active");
+
+        }
+
+    });
+
+}
+
+
+</script>
+
+</div>
+
+</body>
+</html>
