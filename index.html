@@ -5,17 +5,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Music Player</title>
+<title>Music Player</title>
 
 <style>
 
 body{
-    margin:0;
-    padding:20px;
-    font-family:Arial, sans-serif;
     background:#111;
     color:white;
+    font-family:Arial;
     text-align:center;
+    padding:20px;
 }
 
 .player{
@@ -30,39 +29,31 @@ h1{
     color:#00e676;
 }
 
-#date{
-    color:#ccc;
-}
-
-input{
-    margin:15px;
-}
-
 button{
-    padding:12px 18px;
-    margin:5px;
-    border:none;
-    border-radius:10px;
     background:#00c853;
     color:white;
+    border:none;
+    padding:12px;
+    margin:5px;
+    border-radius:10px;
     font-size:16px;
 }
 
 button:hover{
-    background:#00a844;
+    background:#009624;
+}
+
+input{
+    margin:10px;
 }
 
 audio{
     width:100%;
-    margin-top:15px;
-}
-
-ul{
-    list-style:none;
-    padding:0;
+    margin:15px 0;
 }
 
 li{
+    list-style:none;
     background:#333;
     margin:5px;
     padding:10px;
@@ -87,181 +78,22 @@ li{
 
 <input type="file" id="fileInput" accept="audio/*" multiple>
 
-<h3 id="songName">No Song Selected</h3>
+<h3 id="songName">No song selected</h3>
 
 <audio id="audio" controls></audio>
 
 <br>
 
 <button onclick="prevSong()">⏮ Previous</button>
+
 <button onclick="playSong()">▶ Play</button>
+
 <button onclick="pauseSong()">⏸ Pause</button>
+
 <button onclick="nextSong()">⏭ Next</button>
 
+<br>
+
+<button onclick="downloadSong()">⬇️ Download</button>
 
 <ul id="playlist"></ul>
-<script>
-
-let audio = document.getElementById("audio");
-let fileInput = document.getElementById("fileInput");
-let playlist = document.getElementById("playlist");
-let songName = document.getElementById("songName");
-
-let songs = [];
-let currentSong = 0;
-
-
-// Date
-let today = new Date();
-document.getElementById("date").innerHTML =
-"📅 " + today.toDateString();
-
-
-// Upload songs
-fileInput.onchange = function(){
-
-    songs = [];
-
-    playlist.innerHTML = "";
-
-    for(let i = 0; i < fileInput.files.length; i++){
-
-        songs.push(fileInput.files[i]);
-
-        let li = document.createElement("li");
-
-        li.innerHTML = fileInput.files[i].name;
-
-        li.onclick = function(){
-
-            currentSong = i;
-            loadSong();
-
-            playSong();
-
-        };
-
-        playlist.appendChild(li);
-
-    }
-
-};
-
-
-// Load song
-function loadSong(){
-
-    let song = songs[currentSong];
-
-    if(song){
-
-        audio.src = URL.createObjectURL(song);
-
-        songName.innerHTML = song.name;
-
-        highlight();
-
-    }
-
-}
-
-
-// Play
-function playSong(){
-
-    if(songs.length > 0){
-
-        if(!audio.src){
-
-            loadSong();
-
-        }
-
-        audio.play();
-
-    }
-
-}
-
-
-// Pause
-function pauseSong(){
-
-    audio.pause();
-
-}<button onclick="downloadSong()">⬇️ Download</button>
-
-
-// Next
-function nextSong(){
-
-    if(songs.length > 0){
-
-        currentSong++;
-
-        if(currentSong >= songs.length){
-
-            currentSong = 0;
-
-        }
-
-        loadSong();
-
-        playSong();
-
-    }
-
-}
-
-
-// Previous
-function prevSong(){
-
-    if(songs.length > 0){
-
-        currentSong--;
-
-        if(currentSong < 0){
-
-            currentSong = songs.length - 1;
-
-        }
-
-        loadSong();
-
-        playSong();
-
-    }
-
-}
-
-
-// Highlight playlist
-function highlight(){
-
-    let items = document.querySelectorAll("#playlist li");
-
-    items.forEach(function(item,index){
-
-        if(index === currentSong){
-
-            item.classList.add("active");
-
-        }else{
-
-            item.classList.remove("active");
-
-        }
-
-    });
-
-}
-
-
-</script>
-
-</div>
-
-</body>
-</html>
-<button onclick="downloadSong()">⬇️ Download</button>
